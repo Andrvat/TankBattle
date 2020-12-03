@@ -5,6 +5,7 @@
 #pragma once
 
 #include <string>
+#include "GameFieldObjects/ITank.h"
 
 namespace GameModel {
 
@@ -31,6 +32,8 @@ namespace GameModel {
         CellBorderType cellBorderType;
         CellCoordinates cellCoordinates;
 
+        ITank *tank_ = nullptr;
+
     public:
         void setCellCoordinates(unsigned int x, unsigned int y);
 
@@ -39,7 +42,5 @@ namespace GameModel {
         void setBorderType(CellBorderType borderType);
 
         [[nodiscard]] CellBorderType getBorderType() const;
-
-
     };
 }

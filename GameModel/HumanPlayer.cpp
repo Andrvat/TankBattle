@@ -13,5 +13,9 @@ GameModel::HumanPlayer::HumanPlayer() {
 GameModel::HumanPlayer::HumanPlayer(const std::string &name) {
     status_ = PlayerStatus::InProgress;
     type_ = PlayerType::Human;
-    name_ = name;
+    if (name.empty()) {
+        name_ = "Human player";
+    } else {
+        name_ = name;
+    }
 }

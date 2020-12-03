@@ -17,10 +17,10 @@ unsigned int GameModel::PlayerPlate::getTimer() const {
 
 void GameModel::PlayerPlate::increaseTimer() {
     ++timer_;
-    if (timer_ == STEPS_TO_CAPTURE_PLATE) {
+    if (timer_ == TankBattle::STEPS_TO_CAPTURE_PLATE) {
         status_ = true;
     }
-    if (timer_ > STEPS_TO_CAPTURE_PLATE) {
+    if (timer_ > TankBattle::STEPS_TO_CAPTURE_PLATE) {
         throw std::runtime_error("STEPS TO CAPTURE PLATE OVERFLOW!");
         // TODO: Write own exception to process steps to capture plate overflow
     }

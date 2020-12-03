@@ -4,7 +4,7 @@
 
 #pragma once
 
-namespace GameModel {
+namespace TankBattle {
 
     static const unsigned int FIELD_HEIGHT = 11;
     static const unsigned int FIELD_WIDTH = 10;
