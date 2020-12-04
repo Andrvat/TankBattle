@@ -5,11 +5,11 @@
 #include "GameViewModule.h"
 
 GameView::GameViewModule::GameViewModule(GameModel::GameModelModule &gameModel) : gameModel_(gameModel) {
-    this->gameModel_.attach(this);
+    this->gameModel_.attachObserver(this);
 }
 
 void GameView::GameViewModule::removeThisFromObserversList() {
-    this->gameModel_.detach(this);
+    this->gameModel_.detachObserver(this);
 }
 
 void GameView::GameViewModule::update() {

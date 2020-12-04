@@ -12,11 +12,11 @@ namespace GameModel {
     public:
         virtual ~IPublisher() = default;
 
-        virtual void attach(GameView::IObserver *observer) = 0;
+        virtual void attachObserver(GameView::IObserver *observer) = 0;
 
-        virtual void detach(GameView::IObserver *observer) = 0;
+        virtual void detachObserver(GameView::IObserver *observer) = 0;
 
-        virtual void notify() = 0;
+        virtual void notifyObservers() = 0;
 
     };
 

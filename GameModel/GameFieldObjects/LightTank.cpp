@@ -4,7 +4,9 @@
 
 #include "LightTank.h"
 
-GameModel::LightTank::LightTank() {
+GameModel::LightTank::LightTank(GameModel::Cell &positionCell) : ITank(positionCell) {
+    aliveStatus_ = true;
+
     hp_ = TankBattle::TANK_HP_FACTOR * LIGHT_TANK_TANK_HP_MULTIPLIER;
 
     shotRadius_ = TankBattle::SHOT_RADIUS_FACTOR * LIGHT_TANK_SHOT_RADIUS_MULTIPLIER;
@@ -14,5 +16,13 @@ GameModel::LightTank::LightTank() {
 
     tankCode_ = "L";
 
+
+}
+
+void GameModel::LightTank::makeMove() {
+
+}
+
+void GameModel::LightTank::makeShot() {
 
 }

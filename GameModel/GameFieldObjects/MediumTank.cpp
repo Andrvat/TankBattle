@@ -4,7 +4,9 @@
 
 #include "MediumTank.h"
 
-GameModel::MediumTank::MediumTank() {
+GameModel::MediumTank::MediumTank(GameModel::Cell &positionCell) : ITank(positionCell) {
+    aliveStatus_ = true;
+
     hp_ = TankBattle::TANK_HP_FACTOR * MEDIUM_TANK_TANK_HP_MULTIPLIER;
 
     shotRadius_ = TankBattle::SHOT_RADIUS_FACTOR * MEDIUM_TANK_SHOT_RADIUS_MULTIPLIER;
@@ -14,5 +16,13 @@ GameModel::MediumTank::MediumTank() {
 
     tankCode_ = "M";
 
+
+}
+
+void GameModel::MediumTank::makeMove() {
+
+}
+
+void GameModel::MediumTank::makeShot() {
 
 }

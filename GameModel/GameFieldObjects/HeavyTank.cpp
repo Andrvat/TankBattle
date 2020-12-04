@@ -4,7 +4,9 @@
 
 #include "HeavyTank.h"
 
-GameModel::HeavyTank::HeavyTank() {
+GameModel::HeavyTank::HeavyTank(GameModel::Cell &positionCell) : ITank(positionCell) {
+    aliveStatus_ = true;
+
     hp_ = TankBattle::TANK_HP_FACTOR * HEAVY_TANK_TANK_HP_MULTIPLIER;
 
     shotRadius_ = TankBattle::SHOT_RADIUS_FACTOR * HEAVY_TANK_SHOT_RADIUS_MULTIPLIER;
@@ -13,4 +15,12 @@ GameModel::HeavyTank::HeavyTank() {
     moveRadius_ = TankBattle::MOVE_RADIUS_FACTOR * HEAVY_TANK_MOVE_RADIUS_MULTIPLIER;
 
     tankCode_ = "H";
+}
+
+void GameModel::HeavyTank::makeMove() {
+
+}
+
+void GameModel::HeavyTank::makeShot() {
+
 }

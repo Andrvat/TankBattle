@@ -9,3 +9,7 @@ GameModel::BotPlayer::BotPlayer() {
     type_ = PlayerType::Bot;
     name_ = "Bot player";
 }
+
+void GameModel::BotPlayer::makeMove() {
+
+}

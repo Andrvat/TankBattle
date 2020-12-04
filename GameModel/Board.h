@@ -15,7 +15,10 @@ namespace GameModel {
     private:
         std::vector<std::vector<Cell>> cellsBoard_;
     public:
-        Board();
+
+        void initCellsBoard();
+
+        Cell &getCell(unsigned int row, unsigned int column);
     };
 
 }

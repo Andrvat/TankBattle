@@ -18,7 +18,11 @@ namespace GameModel {
 
     class HeavyTank : public ITank {
     public:
-        HeavyTank();
+        explicit HeavyTank(GameModel::Cell &positionCell);
+
+        void makeMove() override;
+
+        void makeShot() override;
     };
 
 }

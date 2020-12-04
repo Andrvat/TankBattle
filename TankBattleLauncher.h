@@ -8,7 +8,7 @@ namespace TankBattle {
 
     class TankBattleLauncher {
     public:
-        void startGame();
+        static void startGame();
     };
 
 }

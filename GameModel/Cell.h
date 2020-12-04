@@ -5,42 +5,37 @@
 #pragma once
 
 #include <string>
-#include "GameFieldObjects/ITank.h"
+
+#include "../GlobalParams.h"
+#include "../CellCoordinates.h"
 
 namespace GameModel {
 
-    struct CellCoordinates {
-        unsigned int x;
-        unsigned int y;
-    };
-
-    enum class CellBorderType {
-        Left,
-        Up,
-        Right,
-        Down,
-        LeftDown,
-        RightDown,
-        LeftUp,
-        RightUp,
-        NoBorder
-    };
+//    enum class CellBorderType {
+//        Left,
+//        Up,
+//        Right,
+//        Down,
+//        LeftDown,
+//        RightDown,
+//        LeftUp,
+//        RightUp,
+//        NoBorder
+//    };
 
     class Cell {
     private:
 
-        CellBorderType cellBorderType;
-        CellCoordinates cellCoordinates;
-
-        ITank *tank_ = nullptr;
+       // CellBorderType cellBorderType;
+        TankBattle::CellCoordinates cellCoordinates;
 
     public:
         void setCellCoordinates(unsigned int x, unsigned int y);
 
-        [[nodiscard]] CellCoordinates getCellCoordinates() const;
+        [[nodiscard]] TankBattle::CellCoordinates getCellCoordinates() const;
 
-        void setBorderType(CellBorderType borderType);
+        //void setBorderType(CellBorderType borderType);
 
-        [[nodiscard]] CellBorderType getBorderType() const;
+        //[[nodiscard]] CellBorderType getBorderType() const;
     };
 }

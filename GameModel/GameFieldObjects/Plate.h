@@ -4,14 +4,17 @@
 
 #pragma once
 
-#include "../../GlobalParams.h"
 #include <exception>
+
+#include "../../GlobalParams.h"
+
+#include "../Cell.h"
 
 namespace GameModel {
 
-    class PlayerPlate {
+    class Plate {
     public:
-        PlayerPlate();
+        explicit Plate(GameModel::Cell &positionCell);
 
         [[nodiscard]] unsigned int getTimer() const;
 
@@ -28,6 +31,8 @@ namespace GameModel {
     private:
         unsigned int timer_;
         bool status_;
+
+        GameModel::Cell &positionCell;
     };
 
 }

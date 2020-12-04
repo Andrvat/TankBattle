@@ -18,7 +18,11 @@ namespace GameModel {
 
     class LightTank : public ITank {
     public:
-        LightTank();
+        explicit LightTank(GameModel::Cell &positionCell);
+
+        void makeMove() override;
+
+        void makeShot() override;
     };
 
 }

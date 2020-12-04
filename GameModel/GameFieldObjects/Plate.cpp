@@ -2,20 +2,20 @@
 // Created by user on 03.12.2020.
 //
 
-#include "PlayerPlate.h"
+#include "Plate.h"
 
 #include <stdexcept>
 
-GameModel::PlayerPlate::PlayerPlate() {
+GameModel::Plate::Plate(GameModel::Cell &positionCell) : positionCell(positionCell) {
     timer_ = 0;
     status_ = false;
 }
 
-unsigned int GameModel::PlayerPlate::getTimer() const {
+unsigned int GameModel::Plate::getTimer() const {
     return timer_;
 }
 
-void GameModel::PlayerPlate::increaseTimer() {
+void GameModel::Plate::increaseTimer() {
     ++timer_;
     if (timer_ == TankBattle::STEPS_TO_CAPTURE_PLATE) {
         status_ = true;
@@ -26,19 +26,19 @@ void GameModel::PlayerPlate::increaseTimer() {
     }
 }
 
-bool GameModel::PlayerPlate::isStatus() const {
+bool GameModel::Plate::isStatus() const {
     return status_;
 }
 
-void GameModel::PlayerPlate::startCapture() {
+void GameModel::Plate::startCapture() {
     status_ = true;
 }
 
-void GameModel::PlayerPlate::resetCapture() {
+void GameModel::Plate::resetCapture() {
     timer_ = 0;
     status_ = false;
 }
 
-bool GameModel::PlayerPlate::isPlateCaptured() const {
+bool GameModel::Plate::isPlateCaptured() const {
     return status_;
 }

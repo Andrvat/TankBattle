@@ -18,7 +18,11 @@ namespace GameModel {
 
     class MediumTank : public ITank {
     public:
-        MediumTank();
+        explicit MediumTank(GameModel::Cell &positionCell);
+
+        void makeMove() override;
+
+        void makeShot() override;
     };
 
 }

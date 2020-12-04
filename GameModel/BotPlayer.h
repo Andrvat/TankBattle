@@ -11,6 +11,8 @@ namespace GameModel {
     class BotPlayer : public IPlayer {
     public:
         BotPlayer();
+
+        void makeMove() override;
     };
 
 }

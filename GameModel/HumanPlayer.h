@@ -13,6 +13,8 @@ namespace GameModel {
         HumanPlayer();
 
         explicit HumanPlayer(const std::string &name);
+
+        void makeMove() override;
     };
 
 }
