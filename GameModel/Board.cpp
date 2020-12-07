@@ -14,6 +14,7 @@ void GameModel::Board::initCellsBoard() {
         cellsBoard_.push_back(vector);
         for (unsigned int j = 0; j < TankBattle::FIELD_WIDTH; j++) {
             Cell cell{};
+            cell.setCellCoordinates(i, j);
             vector.push_back(cell);
         }
     }

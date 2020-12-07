@@ -67,11 +67,27 @@ namespace GameModel {
 
         void setSecondPlayerStep();
 
-        [[nodiscard]] bool isCellCoordinatesAvailableForCurrentPlayer(TankBattle::CellCoordinates coordinates) const;
+        [[nodiscard]] bool isCellCoordinatesAvailableForCurrentPlayerChoice(TankBattle::CellCoordinates coordinates,
+                                                                            size_t &objectTypeIndex) const;
 
         static bool isAction(const std::string &action);
 
+        [[nodiscard]] bool isCellCoordinatesAvailableForMakeStep(TankBattle::CellCoordinates coordinates,
+                                                                 const size_t &objectTypeIndex,
+                                                                 const std::string &action) const;
 
+        [[nodiscard]] IPlayer *chooseCurrentPlayer() const;
+
+
+        [[nodiscard]] IPlayer *chooseEnemyPlayer() const;
+
+        void makePlayersTankMoving(TankBattle::CellCoordinates directionCoordinates, size_t chosenObjectTypeIndex);
+
+        void makeAction(const std::string &action, TankBattle::CellCoordinates directionCoordinates,
+                        size_t chosenObjectTypeIndex);
+
+        void makePlayersTankShooting(const TankBattle::CellCoordinates directionCoordinates,
+                                     const size_t chosenObjectTypeIndex);
     };
 
 }

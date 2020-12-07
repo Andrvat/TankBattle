@@ -18,11 +18,3 @@ GameModel::LightTank::LightTank(GameModel::Cell &positionCell) : ITank(positionC
 
 
 }
-
-void GameModel::LightTank::makeMove() {
-
-}
-
-void GameModel::LightTank::makeShot() {
-
-}

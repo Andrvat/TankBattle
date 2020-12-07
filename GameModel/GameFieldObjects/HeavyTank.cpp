@@ -16,11 +16,3 @@ GameModel::HeavyTank::HeavyTank(GameModel::Cell &positionCell) : ITank(positionC
 
     tankCode_ = "H";
 }
-
-void GameModel::HeavyTank::makeMove() {
-
-}
-
-void GameModel::HeavyTank::makeShot() {
-
-}

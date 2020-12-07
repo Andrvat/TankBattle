@@ -19,9 +19,14 @@ namespace GameModel {
 
         virtual ~ITank() = default;
 
-        virtual void makeMove() = 0;
+        void makeMove(const TankBattle::CellCoordinates directionCoordinates) {
+            positionCell_.setCellCoordinates(directionCoordinates.getX(), directionCoordinates.getY());
+        };
 
-        virtual void makeShot() = 0;
+        bool makeShot(ITank *enemyTank) const {
+            enemyTank->setHp(enemyTank->getHp() - (int) this->getShotPower());
+            return enemyTank->getHp() <= 0;
+        };
 
         [[nodiscard]] bool isAlive() const {
             return aliveStatus_;
@@ -29,6 +34,30 @@ namespace GameModel {
 
         GameModel::Cell getPositionCell() {
             return positionCell_;
+        }
+
+        [[nodiscard]] std::string getTankCode() const {
+            return tankCode_;
+        }
+
+        [[nodiscard]] unsigned int getMoveRadius() const {
+            return moveRadius_;
+        }
+
+        [[nodiscard]] unsigned int getShotRadius() const {
+            return shotRadius_;
+        }
+
+        [[nodiscard]] int getHp() const {
+            return hp_;
+        }
+
+        void setHp(int hp) {
+            hp_ = hp;
+        }
+
+        [[nodiscard]] unsigned int getShotPower() const {
+            return shotPower_;
         }
 
     protected:
@@ -39,11 +68,11 @@ namespace GameModel {
         unsigned int shotRadius_{};
         unsigned int shotPower_{};
 
-        unsigned int hp_{};
+        int hp_{};
 
         std::string tankCode_;
 
-        GameModel::Cell &positionCell_;
+        GameModel::Cell positionCell_;
     };
 
 }

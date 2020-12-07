@@ -81,6 +81,13 @@ namespace GameModel {
             return playersTanks_[tankNumber];
         };
 
+        void deleteTank(const size_t tank) {
+            std::swap(playersTanks_[tank], playersTanks_.back());
+            delete playersTanks_[playersTanks_.size() - 1];
+            playersTanks_.pop_back();
+            --aliveTanksCounter_;
+        }
+
     protected:
         PlayerStatus status_;
         PlayerType type_;

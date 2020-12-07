@@ -19,10 +19,3 @@ GameModel::MediumTank::MediumTank(GameModel::Cell &positionCell) : ITank(positio
 
 }
 
-void GameModel::MediumTank::makeMove() {
-
-}
-
-void GameModel::MediumTank::makeShot() {
-
-}

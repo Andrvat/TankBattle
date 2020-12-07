@@ -10,7 +10,10 @@
 
 void TankBattle::TankBattleLauncher::startGame() {
     GameModel::GameModelModule model;
+
+    // subscribe to model
     GameView::GameViewModule view(model);
+
     GameController::GameControllerModule controller;
 
     model.launchGameModel(&controller);
@@ -19,22 +22,40 @@ void TankBattle::TankBattleLauncher::startGame() {
 
     while (!model.isSomebodyWon()) {
         TankBattle::CellCoordinates stepCellCoordinates = controller.getStepCoordinates();
-        if (!model.isCellCoordinatesAvailableForCurrentPlayer(stepCellCoordinates)) {
-            view.update();
-            continue;
+        size_t chosenObjectTypeIndex;
+        bool playerChoosingStatus = false;
+        while (!playerChoosingStatus) {
+            if (!model.isCellCoordinatesAvailableForCurrentPlayerChoice(stepCellCoordinates, chosenObjectTypeIndex)) {
+                view.update();
+                continue;
+            }
+            playerChoosingStatus = true;
         }
 
         bool isAvailableAction = false;
+        std::string stepAction;
         while (!isAvailableAction) {
-            std::string stepAction = controller.getStepAction();
+            stepAction = controller.getStepAction();
             if (!GameModel::GameModelModule::isAction(stepAction)) {
                 view.update();
                 isAvailableAction = true;
             }
         }
 
+        // TODO: check coordinate's borders in getStepCoordinates method
+        stepCellCoordinates = controller.getStepCoordinates();
+        playerChoosingStatus = false;
+        while (!playerChoosingStatus) {
+            if (!model.isCellCoordinatesAvailableForMakeStep(stepCellCoordinates, chosenObjectTypeIndex, stepAction)) {
+                view.update();
+            }
+            playerChoosingStatus = true;
+        }
 
-
+        model.makeAction(stepAction, stepCellCoordinates, chosenObjectTypeIndex);
+        if (model.isSomebodyWon()) {
+            break;
+        }
 
     }
 
