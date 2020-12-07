@@ -12,6 +12,12 @@
 
 namespace GameModel {
 
+    enum class PlateStatus {
+        NotCapture,
+        Capturing,
+        Captured
+    };
+
     class Plate {
     public:
         explicit Plate(GameModel::Cell &positionCell);
@@ -22,17 +28,19 @@ namespace GameModel {
 
         void resetCapture();
 
-        [[nodiscard]] bool isStatus() const;
-
         void startCapture();
 
         [[nodiscard]] bool isPlateCaptured() const;
 
+        [[nodiscard]] bool isPlateCapturing() const;
+
+        [[nodiscard]] Cell getPositionCell() const;
+
     private:
         unsigned int timer_;
-        bool status_;
+        PlateStatus status_;
 
-        GameModel::Cell &positionCell;
+        GameModel::Cell positionCell;
     };
 
 }

@@ -67,6 +67,8 @@ namespace GameModel {
 
         void setSecondPlayerStep();
 
+        void changePlayersStep();
+
         [[nodiscard]] bool isCellCoordinatesAvailableForCurrentPlayerChoice(TankBattle::CellCoordinates coordinates,
                                                                             size_t &objectTypeIndex) const;
 
@@ -86,8 +88,8 @@ namespace GameModel {
         void makeAction(const std::string &action, TankBattle::CellCoordinates directionCoordinates,
                         size_t chosenObjectTypeIndex);
 
-        void makePlayersTankShooting(const TankBattle::CellCoordinates directionCoordinates,
-                                     const size_t chosenObjectTypeIndex);
+        void makePlayersTankShooting(TankBattle::CellCoordinates directionCoordinates,
+                                     size_t chosenObjectTypeIndex);
     };
 
 }

@@ -88,6 +88,10 @@ namespace GameModel {
             --aliveTanksCounter_;
         }
 
+        [[nodiscard]] Plate *getPlayersPlate() {
+            return playersPlate_;
+        }
+
     protected:
         PlayerStatus status_;
         PlayerType type_;
@@ -96,6 +100,7 @@ namespace GameModel {
 
         std::vector<GameModel::ITank *> playersTanks_;
         GameModel::Plate *playersPlate_;
+
         size_t aliveTanksCounter_;
 
     };

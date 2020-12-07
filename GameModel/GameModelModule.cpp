@@ -184,7 +184,16 @@ GameModel::IPlayer *GameModel::GameModelModule::chooseEnemyPlayer() const {
 
 void GameModel::GameModelModule::makePlayersTankMoving(const TankBattle::CellCoordinates directionCoordinates,
                                                        const size_t chosenObjectTypeIndex) {
+    if (chooseCurrentPlayer()->getTank(chosenObjectTypeIndex)->getPositionCell().getCellCoordinates() ==
+        chooseEnemyPlayer()->getPlayersPlate()->getPositionCell().getCellCoordinates()) {
+        chooseEnemyPlayer()->getPlayersPlate()->resetCapture();
+    }
+
     chooseCurrentPlayer()->getTank(chosenObjectTypeIndex)->makeMove(directionCoordinates);
+
+    if (chooseEnemyPlayer()->getPlayersPlate()->getPositionCell().getCellCoordinates() == directionCoordinates) {
+        chooseEnemyPlayer()->getPlayersPlate()->startCapture();
+    }
     notifyObservers();
 }
 
@@ -203,7 +212,8 @@ void GameModel::GameModelModule::makePlayersTankShooting(const TankBattle::CellC
         notifyObservers();
         return;
     }
-    bool isEnemyTankWasKilled = chooseCurrentPlayer()->getTank(chosenObjectTypeIndex)->makeShot(enemyPlayer->getTank(shootingEnemyTankIndex));
+    bool isEnemyTankWasKilled = chooseCurrentPlayer()->getTank(chosenObjectTypeIndex)->makeShot(
+            enemyPlayer->getTank(shootingEnemyTankIndex));
     if (isEnemyTankWasKilled) {
         enemyPlayer->deleteTank(shootingEnemyTankIndex);
         if (enemyPlayer->getAliveTanksCounter() == 0) {
@@ -216,6 +226,10 @@ void GameModel::GameModelModule::makePlayersTankShooting(const TankBattle::CellC
 void GameModel::GameModelModule::makeAction(const std::string &action,
                                             const TankBattle::CellCoordinates directionCoordinates,
                                             const size_t chosenObjectTypeIndex) {
+    if (chooseEnemyPlayer()->getPlayersPlate()->isPlateCapturing()) {
+        chooseEnemyPlayer()->getPlayersPlate()->increaseTimer();
+    }
+
     if (action == TankBattle::SHOT_STEP) {
         makePlayersTankShooting(directionCoordinates, chosenObjectTypeIndex);
     } else if (action == TankBattle::MOVE_STEP) {
@@ -224,4 +238,17 @@ void GameModel::GameModelModule::makeAction(const std::string &action,
         throw std::runtime_error("Undefined action!");
     }
 
+    if (chooseEnemyPlayer()->getPlayersPlate()->isPlateCaptured()) {
+        chooseCurrentPlayer()->setStatus(GameModel::PlayerStatus::Won);
+        notifyObservers();
+    }
+
+}
+
+void GameModel::GameModelModule::changePlayersStep() {
+    if (whichPlayerIsGoing_ == FIRST_PLAYER_GOES) {
+        whichPlayerIsGoing_ = SECOND_PLAYER_GOES;
+    } else {
+        whichPlayerIsGoing_ = FIRST_PLAYER_GOES;
+    }
 }

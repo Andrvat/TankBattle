@@ -8,7 +8,7 @@
 
 GameModel::Plate::Plate(GameModel::Cell &positionCell) : positionCell(positionCell) {
     timer_ = 0;
-    status_ = false;
+    status_ = PlateStatus::NotCapture;
 }
 
 unsigned int GameModel::Plate::getTimer() const {
@@ -18,7 +18,7 @@ unsigned int GameModel::Plate::getTimer() const {
 void GameModel::Plate::increaseTimer() {
     ++timer_;
     if (timer_ == TankBattle::STEPS_TO_CAPTURE_PLATE) {
-        status_ = true;
+        status_ = PlateStatus::Captured;
     }
     if (timer_ > TankBattle::STEPS_TO_CAPTURE_PLATE) {
         throw std::runtime_error("STEPS TO CAPTURE PLATE OVERFLOW!");
@@ -26,19 +26,24 @@ void GameModel::Plate::increaseTimer() {
     }
 }
 
-bool GameModel::Plate::isStatus() const {
-    return status_;
-}
-
 void GameModel::Plate::startCapture() {
-    status_ = true;
+    timer_ = 0;
+    status_ = PlateStatus::Capturing;
 }
 
 void GameModel::Plate::resetCapture() {
     timer_ = 0;
-    status_ = false;
+    status_ = PlateStatus::NotCapture;
 }
 
 bool GameModel::Plate::isPlateCaptured() const {
-    return status_;
+    return status_ == PlateStatus::Captured;
+}
+
+bool GameModel::Plate::isPlateCapturing() const {
+    return status_ == PlateStatus::Capturing;
+}
+
+GameModel::Cell GameModel::Plate::getPositionCell() const {
+    return positionCell;
 }

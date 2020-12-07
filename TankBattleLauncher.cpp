@@ -54,9 +54,11 @@ void TankBattle::TankBattleLauncher::startGame() {
 
         model.makeAction(stepAction, stepCellCoordinates, chosenObjectTypeIndex);
         if (model.isSomebodyWon()) {
+            view.update();
             break;
         }
 
+        model.changePlayersStep();
     }
 
 }
