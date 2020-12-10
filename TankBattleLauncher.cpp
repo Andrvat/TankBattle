@@ -16,17 +16,23 @@ void TankBattle::TankBattleLauncher::startGame() {
 
     GameController::GameControllerModule controller;
 
+    GameView::GameViewModule::printStartMessage();
+    GameView::GameViewModule::askPlayersNumber();
     model.launchGameModel(&controller);
     model.placeGameFieldObjects();
     model.setFirstPlayerStep();
 
+
     while (!model.isSomebodyWon()) {
-        TankBattle::CellCoordinates stepCellCoordinates = controller.getStepCoordinates();
+        view.printWhatPlayerIsGoing();
         size_t chosenObjectTypeIndex;
+        TankBattle::CellCoordinates stepCellCoordinates{};
         bool playerChoosingStatus = false;
         while (!playerChoosingStatus) {
+            GameView::GameViewModule::askCoordinates();
+            stepCellCoordinates = controller.getStepCoordinates();
             if (!model.isCellCoordinatesAvailableForCurrentPlayerChoice(stepCellCoordinates, chosenObjectTypeIndex)) {
-                view.update();
+                GameView::GameViewModule::printAboutUnreachableCoordinates();
                 continue;
             }
             playerChoosingStatus = true;
@@ -35,26 +41,29 @@ void TankBattle::TankBattleLauncher::startGame() {
         bool isAvailableAction = false;
         std::string stepAction;
         while (!isAvailableAction) {
+            GameView::GameViewModule::askAction();
             stepAction = controller.getStepAction();
             if (!GameModel::GameModelModule::isAction(stepAction)) {
-                view.update();
-                isAvailableAction = true;
+                GameView::GameViewModule::printAboutInvalidAction();
+                continue;
             }
+            isAvailableAction = true;
         }
 
-        // TODO: check coordinate's borders in getStepCoordinates method
-        stepCellCoordinates = controller.getStepCoordinates();
         playerChoosingStatus = false;
         while (!playerChoosingStatus) {
+            GameView::GameViewModule::askCoordinates(stepAction);
+            stepCellCoordinates = controller.getStepCoordinates();
             if (!model.isCellCoordinatesAvailableForMakeStep(stepCellCoordinates, chosenObjectTypeIndex, stepAction)) {
-                view.update();
+                GameView::GameViewModule::printAboutUnreachableCoordinates();
+                continue;
             }
             playerChoosingStatus = true;
         }
 
         model.makeAction(stepAction, stepCellCoordinates, chosenObjectTypeIndex);
         if (model.isSomebodyWon()) {
-            view.update();
+            view.printAboutTheWinner();
             break;
         }
 

@@ -15,7 +15,7 @@ namespace GameModel {
     class ITank {
     public:
 
-        explicit ITank(GameModel::Cell &positionCell) : positionCell_(positionCell) {}
+        explicit ITank(GameModel::Cell positionCell) : positionCell_(positionCell) {}
 
         virtual ~ITank() = default;
 

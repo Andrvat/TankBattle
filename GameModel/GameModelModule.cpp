@@ -1,6 +1,12 @@
 //
 // Created by user on 03.12.2020.
 //
+#include <ctime>
+#include <random>
+#include<cstdlib>
+#include <algorithm>
+
+#include "../GameView/GameViewModule.h"
 #include "GameModelModule.h"
 
 void GameModel::GameModelModule::attachObserver(GameView::IObserver *observer) {
@@ -25,18 +31,21 @@ size_t GameModel::GameModelModule::getObserversListSize() const {
 
 void GameModel::GameModelModule::launchGameModel(GameController::GameControllerModule *controller) {
     modelBoard_.initCellsBoard();
-    size_t playersNumber = controller->getPlayersNumber();
+    int playersNumber = controller->getPlayersNumber();
     std::string humanName;
     switch (playersNumber) {
         case 1:
+            GameView::GameViewModule::askPlayersName(FIRST_PLAYER_GOES);
             humanName = controller->getHumanName();
             firstPlayer_ = new HumanPlayer(humanName);
             secondPlayer_ = new BotPlayer();
             break;
 
         case 2:
+            GameView::GameViewModule::askPlayersName(FIRST_PLAYER_GOES);
             humanName = controller->getHumanName();
             firstPlayer_ = new HumanPlayer(humanName);
+            GameView::GameViewModule::askPlayersName(SECOND_PLAYER_GOES);
             humanName = controller->getHumanName();
             secondPlayer_ = new HumanPlayer(humanName);
             break;
@@ -44,8 +53,6 @@ void GameModel::GameModelModule::launchGameModel(GameController::GameControllerM
         default:
             throw std::runtime_error("Doesn't work with less than one and more than two players!");
     }
-
-    notifyObservers();
 }
 
 void GameModel::GameModelModule::placeGameFieldObjects() {
@@ -53,6 +60,7 @@ void GameModel::GameModelModule::placeGameFieldObjects() {
     initPlayersObjects(secondPlayer_, TankBattle::FIELD_WIDTH - 1);
     notifyObservers();
 }
+
 
 void GameModel::GameModelModule::initPlayersObjects(GameModel::IPlayer *player, const unsigned int playerSide) {
     if (TankBattle::TANKS_BY_PLAYER_COUNT > TankBattle::FIELD_HEIGHT) {
@@ -66,29 +74,33 @@ void GameModel::GameModelModule::initPlayersObjects(GameModel::IPlayer *player, 
      * Start of placing tanks
      */
 
-    // TODO: Check the situation where a tank gets the same coordinates as the player's plate
     std::vector<unsigned int> randomTanksPositions;
-    for (unsigned int i = 0; i < TankBattle::TANKS_BY_PLAYER_COUNT; i++) {
-        randomTanksPositions.push_back((unsigned int) rand() % TankBattle::FIELD_HEIGHT);
+    while (randomTanksPositions.size() != TankBattle::TANKS_BY_PLAYER_COUNT) {
+        auto generated = ((unsigned int) rand()) % TankBattle::FIELD_HEIGHT;
+        if (std::find(randomTanksPositions.begin(), randomTanksPositions.end(), generated) ==
+            randomTanksPositions.end()) {
+            randomTanksPositions.push_back(generated);
+        }
     }
 
-    unsigned int placedTanksCounter = 0;
+
+    auto placedTanksCounter = randomTanksPositions.begin();
     for (unsigned int i = 0;
          i < (unsigned int) TankBattle::TANKS_BY_PLAYER_COUNT * TankBattle::LIGHT_TANKS_SHARE; i++) {
         player->addNewTank(
-                new GameModel::LightTank(modelBoard_.getCell(randomTanksPositions[placedTanksCounter], playerSide)));
+                new GameModel::LightTank(modelBoard_.getCell(*placedTanksCounter, playerSide)));
         placedTanksCounter++;
     }
     for (unsigned int i = 0;
          i < (unsigned int) TankBattle::TANKS_BY_PLAYER_COUNT * TankBattle::MEDIUM_TANKS_SHARE; i++) {
         player->addNewTank(
-                new GameModel::MediumTank(modelBoard_.getCell(randomTanksPositions[placedTanksCounter], playerSide)));
+                new GameModel::MediumTank(modelBoard_.getCell(*placedTanksCounter, playerSide)));
         placedTanksCounter++;
     }
     for (unsigned int i = 0;
          i < (unsigned int) TankBattle::TANKS_BY_PLAYER_COUNT * TankBattle::HEAVY_TANKS_SHARE; i++) {
         player->addNewTank(
-                new GameModel::HeavyTank(modelBoard_.getCell(randomTanksPositions[placedTanksCounter], playerSide)));
+                new GameModel::HeavyTank(modelBoard_.getCell(*placedTanksCounter, playerSide)));
         placedTanksCounter++;
     }
     /*
@@ -96,20 +108,25 @@ void GameModel::GameModelModule::initPlayersObjects(GameModel::IPlayer *player, 
     */
 
     player->addNewPlate(new GameModel::Plate(modelBoard_.getCell(TankBattle::FIELD_HEIGHT / 2, playerSide)));
+    player->setAliveTanksCounter(TankBattle::TANKS_BY_PLAYER_COUNT);
 }
 
 bool GameModel::GameModelModule::isSomebodyWon() const {
     return firstPlayer_->isWon() || secondPlayer_->isWon();
 }
 
-void GameModel::GameModelModule::setFirstPlayerStep() {
-    whichPlayerIsGoing_ = FIRST_PLAYER_GOES;
-    notifyObservers();
+std::string GameModel::GameModelModule::getTheWinnersName() const {
+    if (firstPlayer_->isWon()) {
+        return firstPlayer_->getName();
+    } else if (secondPlayer_->isWon()) {
+        return secondPlayer_->getName();
+    } else {
+        throw std::runtime_error("Nobody isn't still winning!");
+    }
 }
 
-void GameModel::GameModelModule::setSecondPlayerStep() {
-    whichPlayerIsGoing_ = SECOND_PLAYER_GOES;
-    notifyObservers();
+void GameModel::GameModelModule::setFirstPlayerStep() {
+    whichPlayerIsGoing_ = FIRST_PLAYER_GOES;
 }
 
 bool
@@ -137,25 +154,25 @@ bool GameModel::GameModelModule::isCellCoordinatesAvailableForMakeStep(TankBattl
     TankBattle::CellCoordinates tankCoordinates = chooseCurrentPlayer()->getTank(
             objectTypeIndex)->getPositionCell().getCellCoordinates();
     if (action == TankBattle::SHOT_STEP) {
-        if (abs((int) tankCoordinates.getX() - (int) coordinates.getX()) <
+        if (abs((int) tankCoordinates.getX() - (int) coordinates.getX()) <=
             chooseCurrentPlayer()->getTank(objectTypeIndex)->getShotRadius() &&
-            abs((int) tankCoordinates.getY() - (int) coordinates.getY()) <
+            abs((int) tankCoordinates.getY() - (int) coordinates.getY()) <=
             chooseCurrentPlayer()->getTank(objectTypeIndex)->getShotRadius()) {
             isAvailable = true;
         }
     } else if (action == TankBattle::MOVE_STEP) {
-        if (abs((int) tankCoordinates.getX() - (int) coordinates.getX()) <
+        if (abs((int) tankCoordinates.getX() - (int) coordinates.getX()) <=
             chooseCurrentPlayer()->getTank(objectTypeIndex)->getMoveRadius() &&
-            abs((int) tankCoordinates.getY() - (int) coordinates.getY()) <
+            abs((int) tankCoordinates.getY() - (int) coordinates.getY()) <=
             chooseCurrentPlayer()->getTank(objectTypeIndex)->getMoveRadius()) {
             isAvailable = true;
         }
-    }
 
-    IPlayer *player = chooseEnemyPlayer();
-    for (unsigned int i = 0; i < player->getAliveTanksCounter(); i++) {
-        if (player->getTank(i)->getPositionCell().getCellCoordinates() == coordinates) {
-            isAvailable = false;
+        IPlayer *player = chooseEnemyPlayer();
+        for (unsigned int i = 0; i < player->getAliveTanksCounter(); i++) {
+            if (player->getTank(i)->getPositionCell().getCellCoordinates() == coordinates) {
+                isAvailable = false;
+            }
         }
     }
     return isAvailable;
@@ -240,7 +257,6 @@ void GameModel::GameModelModule::makeAction(const std::string &action,
 
     if (chooseEnemyPlayer()->getPlayersPlate()->isPlateCaptured()) {
         chooseCurrentPlayer()->setStatus(GameModel::PlayerStatus::Won);
-        notifyObservers();
     }
 
 }
@@ -252,3 +268,16 @@ void GameModel::GameModelModule::changePlayersStep() {
         whichPlayerIsGoing_ = FIRST_PLAYER_GOES;
     }
 }
+
+GameModel::IPlayer *GameModel::GameModelModule::getFirstPlayer() const {
+    return firstPlayer_;
+}
+
+GameModel::IPlayer *GameModel::GameModelModule::getSecondPlayer() const {
+    return secondPlayer_;
+}
+
+bool GameModel::GameModelModule::whichPlayerIsGoing() const {
+    return whichPlayerIsGoing_;
+}
+

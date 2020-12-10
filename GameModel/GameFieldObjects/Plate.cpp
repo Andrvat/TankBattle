@@ -6,7 +6,7 @@
 
 #include <stdexcept>
 
-GameModel::Plate::Plate(GameModel::Cell &positionCell) : positionCell(positionCell) {
+GameModel::Plate::Plate(GameModel::Cell positionCell) : positionCell(positionCell) {
     timer_ = 0;
     status_ = PlateStatus::NotCapture;
 }
@@ -22,7 +22,6 @@ void GameModel::Plate::increaseTimer() {
     }
     if (timer_ > TankBattle::STEPS_TO_CAPTURE_PLATE) {
         throw std::runtime_error("STEPS TO CAPTURE PLATE OVERFLOW!");
-        // TODO: Write own exception to process steps to capture plate overflow
     }
 }
 

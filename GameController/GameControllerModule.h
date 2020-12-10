@@ -5,6 +5,7 @@
 #pragma once
 
 #include <string>
+#include <iostream>
 
 #include "../GlobalParams.h"
 #include "../CellCoordinates.h"
@@ -13,7 +14,7 @@ namespace GameController {
 
     class GameControllerModule {
     public:
-        size_t getPlayersNumber();
+        int getPlayersNumber();
 
         std::string getHumanName();
 

@@ -20,7 +20,7 @@ namespace GameModel {
 
     class Plate {
     public:
-        explicit Plate(GameModel::Cell &positionCell);
+        explicit Plate(GameModel::Cell positionCell);
 
         [[nodiscard]] unsigned int getTimer() const;
 

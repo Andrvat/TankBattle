@@ -8,6 +8,7 @@
 #include <memory>
 #include <stdexcept>
 #include <random>
+#include <set>
 
 #include "../GameController/GameControllerModule.h"
 
@@ -41,14 +42,19 @@ namespace GameModel {
         std::list<GameView::IObserver *> observersList_;
 
         Board modelBoard_;
-        IPlayer *firstPlayer_;
-        IPlayer *secondPlayer_;
+        IPlayer *firstPlayer_ = nullptr;
+        IPlayer *secondPlayer_ = nullptr;
 
         bool whichPlayerIsGoing_;
 
         void initPlayersObjects(GameModel::IPlayer *player, unsigned int playerSide);
 
     public:
+        ~GameModelModule() {
+            delete firstPlayer_;
+            delete secondPlayer_;
+        }
+
         void attachObserver(GameView::IObserver *observer) override;
 
         void detachObserver(GameView::IObserver *observer) override;
@@ -64,8 +70,6 @@ namespace GameModel {
         [[nodiscard]] bool isSomebodyWon() const;
 
         void setFirstPlayerStep();
-
-        void setSecondPlayerStep();
 
         void changePlayersStep();
 
@@ -90,6 +94,14 @@ namespace GameModel {
 
         void makePlayersTankShooting(TankBattle::CellCoordinates directionCoordinates,
                                      size_t chosenObjectTypeIndex);
+
+        [[nodiscard]] IPlayer *getFirstPlayer() const;
+
+        [[nodiscard]] IPlayer *getSecondPlayer() const;
+
+        [[nodiscard]] bool whichPlayerIsGoing() const;
+
+        [[nodiscard]] std::string getTheWinnersName() const;
     };
 
 }

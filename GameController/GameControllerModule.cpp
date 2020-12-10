@@ -3,19 +3,35 @@
 //
 
 #include "GameControllerModule.h"
+#include "../GameView/GameViewModule.h"
 
-size_t GameController::GameControllerModule::getPlayersNumber() {
-    return 0;
+int GameController::GameControllerModule::getPlayersNumber() {
+    int playersNumber;
+    std::cin >> playersNumber;
+    return playersNumber;
 }
 
 std::string GameController::GameControllerModule::getHumanName() {
-    return std::__cxx11::string();
+    std::string name;
+    std::cin >> name;
+    return name;
 }
 
 TankBattle::CellCoordinates GameController::GameControllerModule::getStepCoordinates() {
-    return TankBattle::CellCoordinates();
+    TankBattle::CellCoordinates coordinates{};
+    int x = -1, y = -1;
+    std::cin >> x >> y;
+    while (x < 0 && y < 0) {
+        GameView::GameViewModule::printInfoAboutNegativeCoordinates();
+        std::cin >> x >> y;
+    }
+    coordinates.setX(x);
+    coordinates.setY(y);
+    return coordinates;
 }
 
 std::string GameController::GameControllerModule::getStepAction() {
-    return std::__cxx11::string();
+    std::string action;
+    std::cin >> action;
+    return action;
 }

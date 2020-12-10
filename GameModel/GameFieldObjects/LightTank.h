@@ -18,7 +18,7 @@ namespace GameModel {
 
     class LightTank : public ITank {
     public:
-        explicit LightTank(GameModel::Cell &positionCell);
+        explicit LightTank(GameModel::Cell positionCell);
     };
 
 }

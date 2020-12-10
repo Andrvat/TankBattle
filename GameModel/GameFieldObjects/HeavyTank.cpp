@@ -4,7 +4,7 @@
 
 #include "HeavyTank.h"
 
-GameModel::HeavyTank::HeavyTank(GameModel::Cell &positionCell) : ITank(positionCell) {
+GameModel::HeavyTank::HeavyTank(GameModel::Cell positionCell) : ITank(positionCell) {
     aliveStatus_ = true;
 
     hp_ = TankBattle::TANK_HP_FACTOR * HEAVY_TANK_TANK_HP_MULTIPLIER;

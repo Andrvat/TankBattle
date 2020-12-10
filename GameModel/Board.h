@@ -18,7 +18,7 @@ namespace GameModel {
 
         void initCellsBoard();
 
-        Cell &getCell(unsigned int row, unsigned int column);
+        Cell getCell(unsigned int row, unsigned int column);
     };
 
 }
