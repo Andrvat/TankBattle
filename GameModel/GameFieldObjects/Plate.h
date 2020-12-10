@@ -22,8 +22,6 @@ namespace GameModel {
     public:
         explicit Plate(GameModel::Cell positionCell);
 
-        [[nodiscard]] unsigned int getTimer() const;
-
         void increaseTimer();
 
         void resetCapture();

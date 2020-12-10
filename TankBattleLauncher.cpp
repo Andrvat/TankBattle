@@ -4,8 +4,6 @@
 
 #include "TankBattleLauncher.h"
 #include "GameView/GameViewModule.h"
-#include "GameModel/GameModelModule.h"
-#include "GameController/GameControllerModule.h"
 
 
 void TankBattle::TankBattleLauncher::startGame() {
@@ -14,23 +12,29 @@ void TankBattle::TankBattleLauncher::startGame() {
     // subscribe to model
     GameView::GameViewModule view(model);
 
-    GameController::GameControllerModule controller;
-
     GameView::GameViewModule::printStartMessage();
     GameView::GameViewModule::askPlayersNumber();
-    model.launchGameModel(&controller);
+    model.launchGameModel();
     model.placeGameFieldObjects();
     model.setFirstPlayerStep();
 
 
     while (!model.isSomebodyWon()) {
+        std::string botMessage = "Bot chose cell with coordinates ";
         view.printWhatPlayerIsGoing();
         size_t chosenObjectTypeIndex;
         TankBattle::CellCoordinates stepCellCoordinates{};
         bool playerChoosingStatus = false;
         while (!playerChoosingStatus) {
-            GameView::GameViewModule::askCoordinates();
-            stepCellCoordinates = controller.getStepCoordinates();
+            if (model.isSecondPlayerBot() && model.whichPlayerIsGoing() == SECOND_PLAYER_GOES) {
+                stepCellCoordinates = model.getBotsTanksCoordinates(chosenObjectTypeIndex);
+                botMessage += "(" + std::to_string(stepCellCoordinates.getX()) + " " +
+                              std::to_string(stepCellCoordinates.getY()) + "), ";
+                Sleep(3000);
+            } else {
+                GameView::GameViewModule::askCoordinates();
+                stepCellCoordinates = GameController::GameControllerModule::getStepCoordinates();
+            }
             if (!model.isCellCoordinatesAvailableForCurrentPlayerChoice(stepCellCoordinates, chosenObjectTypeIndex)) {
                 GameView::GameViewModule::printAboutUnreachableCoordinates();
                 continue;
@@ -41,27 +45,43 @@ void TankBattle::TankBattleLauncher::startGame() {
         bool isAvailableAction = false;
         std::string stepAction;
         while (!isAvailableAction) {
-            GameView::GameViewModule::askAction();
-            stepAction = controller.getStepAction();
-            if (!GameModel::GameModelModule::isAction(stepAction)) {
-                GameView::GameViewModule::printAboutInvalidAction();
-                continue;
+            if (model.isSecondPlayerBot() && model.whichPlayerIsGoing() == SECOND_PLAYER_GOES) {
+                stepAction = model.getBotsAction(stepCellCoordinates);
+                botMessage += "make " + stepAction + " and ";
+            } else {
+                GameView::GameViewModule::askAction();
+                stepAction = GameController::GameControllerModule::getStepAction();
+                if (!GameModel::GameModelModule::isAction(stepAction)) {
+                    GameView::GameViewModule::printAboutInvalidAction();
+                    continue;
+                }
             }
             isAvailableAction = true;
         }
 
         playerChoosingStatus = false;
         while (!playerChoosingStatus) {
-            GameView::GameViewModule::askCoordinates(stepAction);
-            stepCellCoordinates = controller.getStepCoordinates();
-            if (!model.isCellCoordinatesAvailableForMakeStep(stepCellCoordinates, chosenObjectTypeIndex, stepAction)) {
-                GameView::GameViewModule::printAboutUnreachableCoordinates();
-                continue;
+            if (model.isSecondPlayerBot() && model.whichPlayerIsGoing() == SECOND_PLAYER_GOES) {
+                stepCellCoordinates = model.getBotsStepCoordinates(stepCellCoordinates, chosenObjectTypeIndex,
+                                                                   stepAction);
+                botMessage += "do it to (" + std::to_string(stepCellCoordinates.getX()) + " " +
+                              std::to_string(stepCellCoordinates.getY()) + ") cell.";
+            } else {
+                GameView::GameViewModule::askCoordinates(stepAction);
+                stepCellCoordinates = GameController::GameControllerModule::getStepCoordinates();
+                if (!model.isCellCoordinatesAvailableForMakeStep(stepCellCoordinates, chosenObjectTypeIndex,
+                                                                 stepAction)) {
+                    GameView::GameViewModule::printAboutUnreachableCoordinates();
+                    continue;
+                }
             }
             playerChoosingStatus = true;
         }
 
         model.makeAction(stepAction, stepCellCoordinates, chosenObjectTypeIndex);
+        if (model.isSecondPlayerBot() && model.whichPlayerIsGoing() == SECOND_PLAYER_GOES) {
+            GameView::GameViewModule::printBotStepMessage(botMessage);
+        }
         if (model.isSomebodyWon()) {
             view.printAboutTheWinner();
             break;

@@ -16,7 +16,7 @@ namespace GameView {
     public:
         explicit GameViewModule(GameModel::GameModelModule &gameModel);
 
-        void removeThisFromObserversList();
+        [[maybe_unused]] void removeThisFromObserversList();
 
         void update() override;
 
@@ -43,6 +43,8 @@ namespace GameView {
         void printAboutTheWinner() const;
 
         static void printInfoAboutNegativeCoordinates();
+
+        static void printBotStepMessage(const std::string &botMessage);
 
         static void askAction();
 

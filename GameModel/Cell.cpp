@@ -4,14 +4,6 @@
 
 #include "Cell.h"
 
-//GameModel::CellBorderType GameModel::Cell::getBorderType() const {
-//    return cellBorderType;
-//}
-//
-//void GameModel::Cell::setBorderType(const GameModel::CellBorderType borderType) {
-//    cellBorderType = borderType;
-//}
-
 TankBattle::CellCoordinates GameModel::Cell::getCellCoordinates() const {
     return cellCoordinates;
 }

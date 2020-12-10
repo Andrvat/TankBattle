@@ -8,7 +8,7 @@ GameView::GameViewModule::GameViewModule(GameModel::GameModelModule &gameModel) 
     this->gameModel_.attachObserver(this);
 }
 
-void GameView::GameViewModule::removeThisFromObserversList() {
+[[maybe_unused]] void GameView::GameViewModule::removeThisFromObserversList() {
     this->gameModel_.detachObserver(this);
 }
 
@@ -74,9 +74,12 @@ void GameView::GameViewModule::initFieldMap() {
     }
 
     // TODO: field map doesn't work with big sizes of height and width
+
+    // Draw the first player's plate
     fieldMap_[TankBattle::FIELD_HEIGHT / 2 + 1][4] = '#';
     fieldMap_[TankBattle::FIELD_HEIGHT / 2 + 1][5] = '#';
 
+    // Draw the second player's plate
     fieldMap_[TankBattle::FIELD_HEIGHT / 2 + 1][3 + TankBattle::FIELD_WIDTH * 3 - 1] = '#';
     fieldMap_[TankBattle::FIELD_HEIGHT / 2 + 1][3 + TankBattle::FIELD_WIDTH * 3 - 2] = '#';
 }
@@ -151,6 +154,10 @@ void GameView::GameViewModule::printInfoAboutNegativeCoordinates() {
 
 void GameView::GameViewModule::askAction() {
     std::cout << "Enter the action (move or shot):";
+}
+
+void GameView::GameViewModule::printBotStepMessage(const std::string &botMessage) {
+    std::cout << botMessage << std::endl;
 }
 
 

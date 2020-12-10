@@ -11,10 +11,6 @@ GameModel::Plate::Plate(GameModel::Cell positionCell) : positionCell(positionCel
     status_ = PlateStatus::NotCapture;
 }
 
-unsigned int GameModel::Plate::getTimer() const {
-    return timer_;
-}
-
 void GameModel::Plate::increaseTimer() {
     ++timer_;
     if (timer_ == TankBattle::STEPS_TO_CAPTURE_PLATE) {

@@ -27,19 +27,16 @@ namespace GameModel {
 
     class IPlayer {
     public:
-        virtual ~IPlayer() = default;
-
-        virtual void makeMove() = 0;
 
         [[nodiscard]] bool isWon() const {
             return status_ == PlayerStatus::Won;
         };
 
-        [[nodiscard]] bool isLost() const {
+        [[maybe_unused]] [[nodiscard]] bool isLost() const {
             return status_ == PlayerStatus::Lost;
         };
 
-        [[nodiscard]] bool isInProgress() const {
+        [[maybe_unused]] [[nodiscard]] bool isInProgress() const {
             return status_ == PlayerStatus::InProgress;
         };
 
@@ -47,7 +44,7 @@ namespace GameModel {
             status_ = status;
         }
 
-        [[nodiscard]] PlayerType getType() const {
+        [[maybe_unused]] [[nodiscard]] PlayerType getType() const {
             return type_;
         }
 
@@ -63,7 +60,7 @@ namespace GameModel {
         }
 
         void addNewPlate(GameModel::Plate *plate) {
-            playersPlate_ = plate;
+            plate_ = plate;
         }
 
         [[nodiscard]] size_t getAliveTanksCounter() const {
@@ -89,7 +86,11 @@ namespace GameModel {
         }
 
         [[nodiscard]] Plate *getPlayersPlate() {
-            return playersPlate_;
+            return plate_;
+        }
+
+        virtual ~IPlayer() {
+            delete plate_;
         }
 
     protected:
@@ -99,7 +100,7 @@ namespace GameModel {
         std::string name_;
 
         std::vector<GameModel::ITank *> playersTanks_;
-        GameModel::Plate *playersPlate_;
+        GameModel::Plate *plate_ = nullptr;
 
         size_t aliveTanksCounter_;
 

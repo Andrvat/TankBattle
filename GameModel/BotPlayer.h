@@ -12,7 +12,6 @@ namespace GameModel {
     public:
         BotPlayer();
 
-        void makeMove() override;
     };
 
 }

@@ -5,7 +5,6 @@
 #include "LightTank.h"
 
 GameModel::LightTank::LightTank(GameModel::Cell positionCell) : ITank(positionCell) {
-    aliveStatus_ = true;
 
     hp_ = TankBattle::TANK_HP_FACTOR * LIGHT_TANK_TANK_HP_MULTIPLIER;
 

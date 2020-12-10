@@ -27,11 +27,17 @@ namespace TankBattle {
             CellCoordinates::y_ = y;
         }
 
-        friend bool operator==(const CellCoordinates& left, const CellCoordinates& right);
+        friend bool operator==(const CellCoordinates &left, const CellCoordinates &right);
+
+        friend bool operator!=(const CellCoordinates &left, const CellCoordinates &right);
     };
 
     inline bool operator==(const CellCoordinates &left, const CellCoordinates &right) {
         return left.x_ == right.x_ && left.y_ == right.y_;
+    }
+
+    inline bool operator!=(const CellCoordinates &left, const CellCoordinates &right) {
+        return !(left == right);
     }
 
 }

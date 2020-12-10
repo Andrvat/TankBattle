@@ -19,7 +19,3 @@ GameModel::HumanPlayer::HumanPlayer(const std::string &name) {
         name_ = name;
     }
 }
-
-void GameModel::HumanPlayer::makeMove() {
-
-}

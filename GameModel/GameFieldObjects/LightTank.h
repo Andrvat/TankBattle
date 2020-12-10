@@ -8,12 +8,12 @@
 
 namespace GameModel {
 
-    static const unsigned int LIGHT_TANK_MOVE_RADIUS_MULTIPLIER = 1;
+    static const unsigned int LIGHT_TANK_MOVE_RADIUS_MULTIPLIER = 3;
 
-    static const unsigned int LIGHT_TANK_SHOT_POWER_MULTIPLIER = 3;
-    static const unsigned int LIGHT_TANK_SHOT_RADIUS_MULTIPLIER = 3;
+    static const unsigned int LIGHT_TANK_SHOT_POWER_MULTIPLIER = 2;
+    static const unsigned int LIGHT_TANK_SHOT_RADIUS_MULTIPLIER = 2;
 
-    static const unsigned int LIGHT_TANK_TANK_HP_MULTIPLIER = 5;
+    static const unsigned int LIGHT_TANK_TANK_HP_MULTIPLIER = 1;
 
 
     class LightTank : public ITank {

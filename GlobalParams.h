@@ -17,16 +17,16 @@ namespace TankBattle {
     static const double MEDIUM_TANKS_SHARE = 0.4;
     static const double HEAVY_TANKS_SHARE = 0.2;
 
-    static const unsigned int FIELD_HEIGHT = 50;
-    static const unsigned int FIELD_WIDTH = 50;
+    static const unsigned int FIELD_HEIGHT = 25;
+    static const unsigned int FIELD_WIDTH = 25;
 
-    static const unsigned int STEPS_TO_CAPTURE_PLATE = 3;
+    static const unsigned int STEPS_TO_CAPTURE_PLATE = 4;
 
-    static const unsigned int MOVE_RADIUS_FACTOR = 100;
+    static const unsigned int MOVE_RADIUS_FACTOR = 3;
 
-    static const unsigned int SHOT_POWER_FACTOR = 100;
-    static const unsigned int SHOT_RADIUS_FACTOR = 100;
+    static const unsigned int SHOT_POWER_FACTOR = 2;
+    static const unsigned int SHOT_RADIUS_FACTOR = 3;
 
-    static const unsigned int TANK_HP_FACTOR = 1;
+    static const unsigned int TANK_HP_FACTOR = 2;
 
 }

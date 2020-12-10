@@ -28,9 +28,6 @@ namespace GameModel {
             return enemyTank->getHp() <= 0;
         };
 
-        [[nodiscard]] bool isAlive() const {
-            return aliveStatus_;
-        }
 
         GameModel::Cell getPositionCell() {
             return positionCell_;
@@ -61,7 +58,6 @@ namespace GameModel {
         }
 
     protected:
-        bool aliveStatus_{};
 
         unsigned int moveRadius_{};
 

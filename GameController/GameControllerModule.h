@@ -14,13 +14,13 @@ namespace GameController {
 
     class GameControllerModule {
     public:
-        int getPlayersNumber();
+        static int getPlayersNumber();
 
-        std::string getHumanName();
+        static std::string getHumanName();
 
-        TankBattle::CellCoordinates getStepCoordinates();
+        static TankBattle::CellCoordinates getStepCoordinates();
 
-        std::string getStepAction();
+        static std::string getStepAction();
 
     };
 }

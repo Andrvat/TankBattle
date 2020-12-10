@@ -5,7 +5,6 @@
 #include "MediumTank.h"
 
 GameModel::MediumTank::MediumTank(GameModel::Cell positionCell) : ITank(positionCell) {
-    aliveStatus_ = true;
 
     hp_ = TankBattle::TANK_HP_FACTOR * MEDIUM_TANK_TANK_HP_MULTIPLIER;
 

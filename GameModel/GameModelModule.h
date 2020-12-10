@@ -9,6 +9,10 @@
 #include <stdexcept>
 #include <random>
 #include <set>
+#include <ctime>
+#include <random>
+#include<cstdlib>
+#include <algorithm>
 
 #include "../GameController/GameControllerModule.h"
 
@@ -47,6 +51,8 @@ namespace GameModel {
 
         bool whichPlayerIsGoing_;
 
+        bool isSecondPlayerBot_;
+
         void initPlayersObjects(GameModel::IPlayer *player, unsigned int playerSide);
 
     public:
@@ -55,15 +61,25 @@ namespace GameModel {
             delete secondPlayer_;
         }
 
+        bool isSecondPlayerBot() const;
+
+        TankBattle::CellCoordinates getBotsTanksCoordinates(size_t &chosenObjectTypeIndex) const;
+
+        std::string getBotsAction(TankBattle::CellCoordinates coordinates) const;
+
+        TankBattle::CellCoordinates getBotsStepCoordinates(TankBattle::CellCoordinates coordinates,
+                                                           size_t chosenObjectTypeIndex,
+                                                           const std::string &action) const;
+
         void attachObserver(GameView::IObserver *observer) override;
 
         void detachObserver(GameView::IObserver *observer) override;
 
         void notifyObservers() override;
 
-        [[nodiscard]] size_t getObserversListSize() const;
+        [[maybe_unused]] [[nodiscard]] size_t getObserversListSize() const;
 
-        void launchGameModel(GameController::GameControllerModule *controller);
+        void launchGameModel();
 
         void placeGameFieldObjects();
 

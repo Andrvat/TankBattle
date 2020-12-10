@@ -14,7 +14,6 @@ namespace GameModel {
 
         explicit HumanPlayer(const std::string &name);
 
-        void makeMove() override;
     };
 
 }
